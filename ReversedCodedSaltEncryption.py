@@ -1,38 +1,38 @@
-def crypt(O0000O00OOO0O000O, OO00OO00OOO0OO0O0):
-	O00000OOO00O00000 = 0
-	OOO0OO000O0OOO000 = ""
-	for OOOOO000OO000OO0O in O0000O00OOO0O000O:
-		if ord(OOOOO000OO000OO0O) > (33 + 9) or ord(OOOOO000OO000OO0O) < 126:
-			OOO0OO000O0OOO000 += chr(ord(OOOOO000OO000OO0O) + int(str(OO00OO00OOO0OO0O0)[O00000OOO00O00000]))
-			if O00000OOO00O00000 + 1 >= len(str(OO00OO00OOO0OO0O0)):
-				O00000OOO00O00000 = 0
+def crypt(self, code):
+	counter = 0
+	text = ""
+	for c in self:
+		if ord(c) > (33 + 9) or ord(c) < 126:
+			text += chr(ord(c) + int(str(code)[counter]))
+			if counter + 1 >= len(str(code)):
+				counter = 0
 			else:
-				O00000OOO00O00000 += 1
-	OO0OOO0O00O0000OO = ""
-	O00OOOOO0OO00OOO0 = len(OOO0OO000O0OOO000)
-	for O0OO0OO0O00O0OO0O in OOO0OO000O0OOO000:
-		OO0OOO0O00O0000OO += O0OO0OO0O00O0OO0O + OOO0OO000O0OOO000[O00OOOOO0OO00OOO0 - 1]
-		O00OOOOO0OO00OOO0 -= 1
-	return OO0OOO0O00O0000OO
+				counter += 1
+	salt_text = ""
+	j = len(text)
+	for i in text:
+		salt_text += i + text[j - 1]
+		j -= 1
+	return salt_text
 
 
-def decrypt(O000O00OOOO00O00O, OOO0OO0O0000OO000):
-	OOOOO0OO0OO0O00OO = ""
-	OO0O0O0OO00OO00O0 = 0
-	while OO0O0O0OO00OO00O0 < len(O000O00OOOO00O00O):
-		OOOOO0OO0OO0O00OO += O000O00OOOO00O00O[OO0O0O0OO00OO00O0]
-		OO0O0O0OO00OO00O0 += 2
-	OO0O0O0OO00OO00O0 -= 1
-	while OO0O0O0OO00OO00O0 > 0:
-		OOOOO0OO0OO0O00OO += O000O00OOOO00O00O[OO0O0O0OO00OO00O0]
-		OO0O0O0OO00OO00O0 -= 2
-	OOO000O0O0000000O = 0
-	OOOO000O0O0OO0O00 = ""
-	for O0000O0OOO0OOOO0O in OOOOO0OO0OO0O00OO[:len(OOOOO0OO0OO0O00OO) // 2]:
-		if ord(O0000O0OOO0OOOO0O) > (33 + 9) or ord(O0000O0OOO0OOOO0O) < 126:
-			OOOO000O0O0OO0O00 += chr(ord(O0000O0OOO0OOOO0O) - int(str(OOO0OO0O0000OO000)[OOO000O0O0000000O]))
-			if OOO000O0O0000000O + 1 >= len(str(OOO0OO0O0000OO000)):
-				OOO000O0O0000000O = 0
+def decrypt(self, code):
+	text = ""
+	j = 0
+	while j < len(self):
+		text += self[j]
+		j += 2
+	j -= 1
+	while j > 0:
+		text += self[j]
+		j -= 2
+	counter = 0
+	decrypted_text = ""
+	for c in text[:len(text) // 2]:
+		if ord(c) > (33 + 9) or ord(c) < 126:
+			decrypted_text += chr(ord(c) - int(str(code)[counter]))
+			if counter + 1 >= len(str(code)):
+				counter = 0
 			else:
-				OOO000O0O0000000O += 1
-	return OOOO000O0O0OO0O00
+				counter += 1
+	return decrypted_text
